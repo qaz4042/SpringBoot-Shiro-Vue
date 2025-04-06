@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.heeexy.example.dao.ArticleCatalogDao">
+
+    <insert id="addArticleCatalog" parameterType="com.alibaba.fastjson.JSONObject">
+        INSERT INTO article_catalog
+            (name)
+        VALUES (#{name})
+    </insert>
+
+    <select id="countArticleCatalog" resultType="Integer">
+        SELECT count(0)
+        FROM article_catalog w
+        WHERE w.delete_status = '1'
+    </select>
+
+    <select id="listArticleCatalog" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT w.id,
+               w.name,
+               date_format(w.create_time, '%Y.%m.%d %T') createTime,
+               date_format(w.update_time, '%Y.%m.%d %T') updateTime
+        FROM article_catalog w
+        WHERE w.delete_status = '1'
+        ORDER BY w.id DESC
+        LIMIT #{offSet}, #{pageRow}
+    </select>
+
+    <update id="updateArticleCatalog" parameterType="com.alibaba.fastjson.JSONObject">
+        UPDATE article_catalog
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
